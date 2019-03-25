@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{1ce7e031-1f1b-4844-ac13-fd9dfc51fa57}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DllInterface.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryTrailDialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AircraftHistoryTrail.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="RadarScreen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroScopeTrailsPlugin.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EuroScopePlugIn.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryTrailData.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryTrailDialog.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AircraftHistoryTrail.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="RadarScreen.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="EuroscopeTrailsApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroScopeTrailsPlugin.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EuroScopeTrails.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitignore" />
+  </ItemGroup>
+</Project>
