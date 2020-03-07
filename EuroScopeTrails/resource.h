@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by UKControllerPlugin.rc
+// Used by EuroScopeTrails.rc
 //
 #define IDD_HISTORY_TRAIL               102
 #define IDS_STRING_HOLD_ACT             110
@@ -10,6 +10,8 @@
 #define IDC_CHECK_AA                    1003
 #define IDC_TRAIL_TYPE                  1004
 #define IDC_TRAIL_LENGTH                1005
+#define IDC_CHECK_AA2                   1006
+#define IDC_CHECK_FILLED                1006
 #define IDC_TRAIL_COLOUR                1009
 #define IDC_SPIN_LENGTH                 1010
 #define IDC_DOT_SIZE                    1012

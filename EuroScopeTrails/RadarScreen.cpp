@@ -4,7 +4,7 @@
 #include "HistoryTrailDialog.h"
 
 RadarScreen::RadarScreen(
-    const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>> & trails
+    const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>>& trails
 ) : trails(trails), startColour(255, 255, 130, 20), pen(this->startColour)
 {
 }
@@ -53,6 +53,13 @@ void RadarScreen::OnAsrContentToBeSaved(void)
         this->fadingUserSettingDescription,
         this->fadingTrails ? "1" : "0"
     );
+
+    this->SaveDataToAsr(
+        this->filledUserSettingKey,
+        this->filledUserSettingDescription,
+        this->filledTrails ? "1" : "0"
+    );
+
     this->SaveDataToAsr(
         this->trailLengthUserSettingKey,
         this->trailLengthUserSettingDescription,
@@ -91,7 +98,7 @@ void RadarScreen::OnAsrContentToBeSaved(void)
 */
 void RadarScreen::OnAsrContentLoaded(bool loaded)
 {
-    this->visible = this->HasAsrKey(this->visibleUserSettingKey) 
+    this->visible = this->HasAsrKey(this->visibleUserSettingKey)
         ? strcmp(this->GetDataFromAsr(this->visibleUserSettingKey), "1") == 0
         : true;
 
@@ -111,6 +118,11 @@ void RadarScreen::OnAsrContentLoaded(bool loaded)
     this->fadingTrails = this->HasAsrKey(this->fadingUserSettingKey)
         ? strcmp(this->GetDataFromAsr(this->fadingUserSettingKey), "1") == 0
         : true;
+
+    this->filledTrails = this->HasAsrKey(this->filledUserSettingKey)
+        ? strcmp(this->GetDataFromAsr(this->filledUserSettingKey), "1") == 0
+        : true;
+
 
     this->historyTrailLength = this->HasAsrKey(this->trailLengthUserSettingKey)
         ? std::stoi(this->GetDataFromAsr(this->trailLengthUserSettingKey))
@@ -157,7 +169,7 @@ void RadarScreen::OnAsrContentLoaded(bool loaded)
 
     Handle show/hide and opening a dialog to display options
 */
-bool RadarScreen::OnCompileCommand(const char * sCommandLine)
+bool RadarScreen::OnCompileCommand(const char* sCommandLine)
 {
     // Required so we can hit the dialog resource.
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -166,7 +178,8 @@ bool RadarScreen::OnCompileCommand(const char * sCommandLine)
     if (strcmp(sCommandLine, ".estrails show") == 0) {
         this->visible = true;
         return true;
-    } else if (strcmp(sCommandLine, ".estrails hide") == 0) {
+    }
+    else if (strcmp(sCommandLine, ".estrails hide") == 0) {
         this->visible = false;
         return true;
     }
@@ -186,6 +199,7 @@ bool RadarScreen::OnCompileCommand(const char * sCommandLine)
     HistoryTrailData data;
     data.fade = &this->fadingTrails;
     data.degrade = &this->degradingTrails;
+    data.filled = &this->filledTrails;
     data.antiAlias = &this->antialiasedTrails;
     data.type = &this->historyTrailType;
     data.length = &this->historyTrailLength;
@@ -254,7 +268,7 @@ void RadarScreen::OnRefresh(HDC hdc, int phase)
             this->PositionOffScreen(radarTarget.GetPosition().GetPosition()) ||
             altitude < this->minimumDisplayAltitude ||
             altitude > this->maximumDisplayAltitude
-        ) {
+            ) {
             continue;
         }
 
@@ -319,10 +333,13 @@ void RadarScreen::OnRefresh(HDC hdc, int phase)
     Draws a single dot to the screen.
 */
 void RadarScreen::DrawDot(
-    Gdiplus::Graphics & graphics,
-    Gdiplus::Pen & pen,
-    const Gdiplus::RectF & area
+    Gdiplus::Graphics& graphics,
+    Gdiplus::Pen& pen,
+    const Gdiplus::RectF& area
 ) {
+    Gdiplus::Color currentColor;
+    this->pen.GetColor(&currentColor);
+    Gdiplus::SolidBrush dotBrush(currentColor);
     if (this->historyTrailType == this->trailTypeDiamond) {
         // Points, starting at the centre left and going anticlockwise
         Gdiplus::PointF points[4] = {
@@ -332,16 +349,25 @@ void RadarScreen::DrawDot(
             Gdiplus::PointF(area.X + (area.Width / 2), area.Y)
         };
         graphics.DrawPolygon(&pen, points, 4);
+        if (this->filledTrails) {
+            graphics.FillPolygon(&dotBrush, points, 4);
+        };
     }
     else if (this->historyTrailType == this->trailTypeCircle) {
         graphics.DrawEllipse(&pen, area);
+        if (this->filledTrails) {
+            graphics.FillEllipse(&dotBrush, area);
+        };
     }
     else {
         graphics.DrawRectangle(&pen, area);
+        if (this->filledTrails) {
+            graphics.FillRectangle(&dotBrush, area);
+        };
     }
 }
 
-bool RadarScreen::HasAsrKey(const char * key)
+bool RadarScreen::HasAsrKey(const char* key)
 {
     return this->GetDataFromAsr(key) != NULL;
 }

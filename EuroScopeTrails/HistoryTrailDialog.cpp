@@ -4,7 +4,7 @@
 
 IMPLEMENT_DYNAMIC(HistoryTrailDialog, CDialog)
 
-    HistoryTrailDialog::HistoryTrailDialog(CWnd* pParent, HistoryTrailData * trailData)
+HistoryTrailDialog::HistoryTrailDialog(CWnd* pParent, HistoryTrailData* trailData)
     : CDialog(IDD_HISTORY_TRAIL, pParent)
 {
     this->data = trailData;
@@ -28,6 +28,7 @@ void HistoryTrailDialog::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_CHECK_DEGRADING, this->degradingCheck);
     DDX_Control(pDX, IDC_CHECK_FADING, this->fadingCheck);
+    DDX_Control(pDX, IDC_CHECK_FILLED, this->filledCheck);
     DDX_Control(pDX, IDC_CHECK_AA, this->antiAliasCheck);
     DDX_Control(pDX, IDC_TRAIL_LENGTH, this->trailLength);
     DDX_Control(pDX, IDC_TRAIL_TYPE, this->trailType);
@@ -52,22 +53,23 @@ BOOL HistoryTrailDialog::OnInitDialog(void)
     this->antiAliasCheck.SetCheck((*this->data->antiAlias) ? BST_CHECKED : BST_UNCHECKED);
     this->fadingCheck.SetCheck((*this->data->fade) ? BST_CHECKED : BST_UNCHECKED);
     this->degradingCheck.SetCheck((*this->data->degrade) ? BST_CHECKED : BST_UNCHECKED);
+    this->filledCheck.SetCheck((*this->data->filled) ? BST_CHECKED : BST_UNCHECKED);
 
     // Trail length
     this->lengthSpinner.SetRange(this->minTrailLength, this->maxTrailLength);
     this->lengthSpinner.SetPos(
         *this->data->length <= this->maxTrailLength && this->minTrailLength > 0
-            ? *this->data->length
-            : this->defaultTrailLength
+        ? *this->data->length
+        : this->defaultTrailLength
     );
 
     // Dot size
     this->dotSizeSpinner.SetRange(this->minDotSize, this->maxDotSize);
     this->dotSizeSpinner.SetPos(
         *this->data->dotSize <= this->maxDotSize && this->minDotSize > 0
-            ? *this->data->dotSize
-            : this->defaultDotSize
-        );
+        ? *this->data->dotSize
+        : this->defaultDotSize
+    );
 
     // Trail type
     this->trailType.InsertString(this->trailTypeDiamond, L"Diamond");
@@ -77,9 +79,10 @@ BOOL HistoryTrailDialog::OnInitDialog(void)
         *this->data->type == this->trailTypeDiamond ||
         *this->data->type == this->trailTypeCircle ||
         *this->data->type == this->trailTypeSquare
-    ) {
+        ) {
         this->trailType.SetCurSel(*this->data->type);
-    } else {
+    }
+    else {
         this->trailType.SetCurSel(0);
     }
 
@@ -106,6 +109,7 @@ void HistoryTrailDialog::OnOK(void)
     *this->data->antiAlias = this->antiAliasCheck.GetCheck() == BST_CHECKED;
     *this->data->fade = this->fadingCheck.GetCheck() == BST_CHECKED;
     *this->data->degrade = this->degradingCheck.GetCheck() == BST_CHECKED;
+    *this->data->filled = this->filledCheck.GetCheck() == BST_CHECKED;
     *this->data->length = this->lengthSpinner.GetPos();
     *this->data->dotSize = this->dotSizeSpinner.GetPos();
     *this->data->type = this->trailType.GetCurSel();

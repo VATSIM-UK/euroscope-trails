@@ -12,136 +12,144 @@
 */
 class RadarScreen : public EuroScopePlugIn::CRadarScreen
 {
-    public:
-        RadarScreen(const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>> & trails);
-        ~RadarScreen(void);
-        void OnAsrContentToBeClosed(void);
-        void OnAsrContentToBeSaved(void);
-        void OnAsrContentLoaded(bool loaded);
-        bool OnCompileCommand(const char * sCommandLine);
-        void OnRefresh(HDC hdc, int phase);
-        bool PositionOffScreen(EuroScopePlugIn::CPosition pos);
+public:
+    RadarScreen(const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>>& trails);
+    ~RadarScreen(void);
+    void OnAsrContentToBeClosed(void);
+    void OnAsrContentToBeSaved(void);
+    void OnAsrContentLoaded(bool loaded);
+    bool OnCompileCommand(const char* sCommandLine);
+    void OnRefresh(HDC hdc, int phase);
+    bool PositionOffScreen(EuroScopePlugIn::CPosition pos);
 
-    private:
+private:
 
-        void DrawDot(
-            Gdiplus::Graphics & graphics,
-            Gdiplus::Pen & pen,
-            const Gdiplus::RectF & area
-        );
+    void DrawDot(
+        Gdiplus::Graphics& graphics,
+        Gdiplus::Pen& pen,
+        const Gdiplus::RectF& area
+    );
 
-        bool HasAsrKey(const char * key);
+    bool HasAsrKey(const char* key);
 
-        // Is the ASR Loaded
-        bool asrLoaded = false;
+    // Is the ASR Loaded
+    bool asrLoaded = false;
 
-        // The colour to draw the trails with (or just the first colour, if fading)
-        Gdiplus::Color startColour;
+    // The colour to draw the trails with (or just the first colour, if fading)
+    Gdiplus::Color startColour;
 
-        // The pen with which to draw the trails
-        Gdiplus::Pen pen;
+    // The pen with which to draw the trails
+    Gdiplus::Pen pen;
 
-        const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>> & trails;
+    const std::map<std::string, std::unique_ptr<AircraftHistoryTrail>>& trails;
 
-        // Visibility ASR settings
-        const char * visibleUserSettingKey = "HistoryTrailDisplay";
+    // Visibility ASR settings
+    const char* visibleUserSettingKey = "HistoryTrailDisplay";
 
-        const char * visibleUserSettingDescription = "Display History Trails";
+    const char* visibleUserSettingDescription = "Display History Trails";
 
-        // Trail type ASR settings
-        const char * trailTypeUserSettingKey = "HistoryTrailType";
+    // Trail type ASR settings
+    const char* trailTypeUserSettingKey = "HistoryTrailType";
 
-        const char * trailTypeUserSettingDescription = "History Trail Type";
+    const char* trailTypeUserSettingDescription = "History Trail Type";
 
-        // Dot size ASR settings
-        const char * dotSizeUserSettingKey = "HistoryTrailDotSize";
+    // Dot size ASR settings
+    const char* dotSizeUserSettingKey = "HistoryTrailDotSize";
 
-        const char * dotSizeUserSettingDescription = "History Trail Dot Size";
+    const char* dotSizeUserSettingDescription = "History Trail Dot Size";
 
-        // Degrading ASR settings
-        const char * degradingUserSettingKey = "HistoryTrailDegrade";
+    // Degrading ASR settings
+    const char* degradingUserSettingKey = "HistoryTrailDegrade";
 
-        const char * degradingUserSettingDescription = "History Trail Degrade";
+    const char* degradingUserSettingDescription = "History Trail Degrade";
 
-        // Fading ASR settings
-        const char * fadingUserSettingKey = "HistoryTrailFade";
+    // Fading ASR settings
+    const char* fadingUserSettingKey = "HistoryTrailFade";
 
-        const char * fadingUserSettingDescription = "History Trail Fade";
+    const char* fadingUserSettingDescription = "History Trail Fade";
 
-        // AA ASR settings
-        const char * antialiasUserSettingKey = "HistoryTrailAntiAlias";
+    // Filled ASR settings
+    const char* filledUserSettingKey = "HistoryTrailDotFilled";
 
-        const char * antialiasUserSettingDescription = "History Trail Antialias";
+    const char* filledUserSettingDescription = "History Trail Filled";
 
-        // Trail length ASR settings
-        const char * trailLengthUserSettingKey = "HistoryTrailLength";
+    // AA ASR settings
+    const char* antialiasUserSettingKey = "HistoryTrailAntiAlias";
 
-        const char * trailLengthUserSettingDescription = "History Trail Length";
+    const char* antialiasUserSettingDescription = "History Trail Antialias";
 
-        // Trail colour ASR settings
-        const char * trailColourUserSettingKey = "HistoryTrailColour";
+    // Trail length ASR settings
+    const char* trailLengthUserSettingKey = "HistoryTrailLength";
 
-        const char * trailColourUserSettingDescription = "History Trail Colour";
+    const char* trailLengthUserSettingDescription = "History Trail Length";
 
-        // Min altitude filter settings
-        const char * minAltitudeFilterUserSettingKey = "HistoryTrailMinAltitudeFilter";
-        const char * minAltitudeFilterUserSettingDescription = "Minimum History Trail Altitude";
+    // Trail colour ASR settings
+    const char* trailColourUserSettingKey = "HistoryTrailColour";
 
-        // Max altitude filter settings
-        const char * maxAltitudeFilterUserSettingKey = "HistoryTrailMaxAltitudeFilter";
-        const char * maxAltitudeFilterUserSettingDescription = "Maximum History Trail Altitude";
+    const char* trailColourUserSettingDescription = "History Trail Colour";
 
-        // The module menu text
-        const char * menuItemDescription = "Configure History Trails";
+    // Min altitude filter settings
+    const char* minAltitudeFilterUserSettingKey = "HistoryTrailMinAltitudeFilter";
+    const char* minAltitudeFilterUserSettingDescription = "Minimum History Trail Altitude";
 
-        // The minimum groundspeed to display history trails for.
-        const int minimumSpeed = 50;
+    // Max altitude filter settings
+    const char* maxAltitudeFilterUserSettingKey = "HistoryTrailMaxAltitudeFilter";
+    const char* maxAltitudeFilterUserSettingDescription = "Maximum History Trail Altitude";
 
-        // Diamond trail type
-        const int trailTypeDiamond = 0;
+    // The module menu text
+    const char* menuItemDescription = "Configure History Trails";
 
-        // Square trail type
-        const int trailTypeSquare = 1;
+    // The minimum groundspeed to display history trails for.
+    const int minimumSpeed = 50;
 
-        // Circle trail type
-        const int trailTypeCircle = 2;
+    // Diamond trail type
+    const int trailTypeDiamond = 0;
 
-        // Default minimum altitude for altitude filter
-        const int defaultMinAltitude = 0;
+    // Square trail type
+    const int trailTypeSquare = 1;
 
-        // Default max altitude for altitude filter
-        const int defaultMaxAltitude = 99999;
+    // Circle trail type
+    const int trailTypeCircle = 2;
 
-        // Whether or not we should render the trails.
-        bool visible;
+    // Default minimum altitude for altitude filter
+    const int defaultMinAltitude = 0;
 
-        // The type of history trail.
-        int historyTrailType;
+    // Default max altitude for altitude filter
+    const int defaultMaxAltitude = 99999;
 
-        // History trail dotsize as a float
-        float historyTrailDotSizeFloat;
+    // Whether or not we should render the trails.
+    bool visible;
 
-        // The size of each history trail dot
-        int historyTrailDotSize;
+    // The type of history trail.
+    int historyTrailType;
 
-        // Whether trails should degrade over time
-        bool degradingTrails;
+    // History trail dotsize as a float
+    float historyTrailDotSizeFloat;
 
-        // Whether or not trails should fade over time
-        bool fadingTrails;
+    // The size of each history trail dot
+    int historyTrailDotSize;
 
-        // Whether or not trails should use antialiasing
-        bool antialiasedTrails;
+    // Whether trails should degrade over time
+    bool degradingTrails;
 
-        // The length of trail to render
-        int historyTrailLength;
+    // Whether or not trails should fade over time
+    bool fadingTrails;
 
-        // The amount of alpha to reduce per dot
-        int alphaPerDot;
+    // Whether or not trails should be filled with the color
+    bool filledTrails;
 
-        // The altitude at and below which not to display
-        int minimumDisplayAltitude;
+    // Whether or not trails should use antialiasing
+    bool antialiasedTrails;
 
-        // The altitude at and above which not to display
-        int maximumDisplayAltitude;
+	// The length of trail to render
+    int historyTrailLength;
+
+    // The amount of alpha to reduce per dot
+    int alphaPerDot;
+
+    // The altitude at and below which not to display
+    int minimumDisplayAltitude;
+
+    // The altitude at and above which not to display
+    int maximumDisplayAltitude;
 };
